@@ -1,7 +1,7 @@
 services:
   jiraapp:
     extends:
-      file: jira/lts/docker-compose.yml
+      file: jira/docker-compose.yml
       service: jira
     # command: /code/run_web_app
     # ports:
@@ -16,7 +16,7 @@ services:
 
   conapp:
     extends:
-      file: confluence/confluence_lts/docker-compose.yml
+      file: confluence/docker-compose.yml
       service: confluence
     depends_on:
       - mysqlapp

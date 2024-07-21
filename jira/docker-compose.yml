@@ -3,7 +3,7 @@ services:
     # build:
     #   context: ./
     #   dockerfile: Dockerfile
-    image: jira:9.12.11
+    image: jingroot/jira:9.12.11
     container_name: jira
     environment:
       - TZ=Asia/Shanghai
@@ -19,20 +19,6 @@ services:
     #   - mysql
     networks:
       - net_d1
-
-#  mysql:
-#    image: mysql:8.0
-#    container_name: mysql
-#    environment:
-#      - TZ=Asia/Shanghai
-#    volumes:
-#      - /opt/mysql/data:/var/lib/mysql
-#      - /opt/mysql/my.cnf:/etc/my.cnf
-#    ports:
-#      - 3306:3306
-#    networks:
-#      net_d1:
-#        ipv4_address: 172.20.0.10
 
 # networks:
 #   net_d1:
