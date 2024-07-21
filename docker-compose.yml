@@ -1,0 +1,51 @@
+services:
+  jiraapp:
+    extends:
+      file: jira/lts/docker-compose.yml
+      service: jira
+    # command: /code/run_web_app
+    # ports:
+    #   - 8080:8080
+    depends_on:
+      - mysqlapp
+    # volumes:
+    #   - jirahome:/var/jira
+    #   - ./server.xml:/opt/jira/conf/server.xml
+    # networks:
+    #   - net_d1
+
+  conapp:
+    extends:
+      file: confluence/confluence_lts/docker-compose.yml
+      service: confluence
+    depends_on:
+      - mysqlapp
+
+  mysqlapp:
+    extends:
+      file: mysql/docker-compose.yml
+      service: mysql
+
+  mysql57:
+    extends:
+      file: mysql57/docker-compose.yml
+      service: mysql
+
+  nginxapp:
+    extends:
+      file: nginx/docker-compose.yml
+      service: nginx
+    depends_on:
+      - jiraapp
+      - conapp
+
+
+networks:
+  net_d1:
+    external: true
+
+volumes:
+  conhome:
+    external: true
+  jirahome:
+    external: true

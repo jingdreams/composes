@@ -1,0 +1,18 @@
+services:
+  openresty:
+    image: openresty/openresty:jammy
+    container_name: openresty
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - openresty:/usr/local/openresty
+    networks:
+      - net_d1
+
+networks:
+  net_d1:
+    external: true
+volumes:
+  openresty:
+    external: true

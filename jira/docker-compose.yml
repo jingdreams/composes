@@ -1,0 +1,43 @@
+services:
+  jira:
+    # build:
+    #   context: ./
+    #   dockerfile: Dockerfile
+    image: jira:9.12.11
+    container_name: jira
+    environment:
+      - TZ=Asia/Shanghai
+#      - JVM_MINIMUM_MEMORY=1g
+#      - JVM_MAXIMUM_MEMORY=12g
+#      - JVM_CODE_CACHE_ARGS='-XX:InitialCodeCacheSize=1g -XX:ReservedCodeCacheSize=8g'
+    ports:
+      - "8080:8080"
+    volumes:
+      - jirahome:/var/jira
+      - ./server.xml:/opt/jira/conf/server.xml
+    # depends_on:
+    #   - mysql
+    networks:
+      - net_d1
+
+#  mysql:
+#    image: mysql:8.0
+#    container_name: mysql
+#    environment:
+#      - TZ=Asia/Shanghai
+#    volumes:
+#      - /opt/mysql/data:/var/lib/mysql
+#      - /opt/mysql/my.cnf:/etc/my.cnf
+#    ports:
+#      - 3306:3306
+#    networks:
+#      net_d1:
+#        ipv4_address: 172.20.0.10
+
+# networks:
+#   net_d1:
+#     external: true
+
+# volumes:
+#   jirahome:
+#     external: true

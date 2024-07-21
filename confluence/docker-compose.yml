@@ -1,0 +1,30 @@
+services:
+  confluence:
+    # build:
+    #   context: ./
+    #   dockerfile: Dockerfile
+    image: confluence:8.5.12
+    container_name: confluence
+    environment:
+      - TZ=Asia/Shanghai
+    #      - JVM_MINIMUM_MEMORY=1g
+    #      - JVM_MAXIMUM_MEMORY=12g
+    #      - JVM_CODE_CACHE_ARGS='-XX:InitialCodeCacheSize=1g -XX:ReservedCodeCacheSize=8g'
+    # depends_on:
+    #   - mysql
+    ports:
+      - "8090:8090"
+    volumes:
+      - conhome:/var/confluence
+      - ./server.xml:/opt/confluence/conf/server.xml
+    #restart: always
+    networks:
+      - net_d1
+
+# networks:
+#   net_d1:
+#     external: true
+
+# volumes:
+#   conhome:
+#     external: true
