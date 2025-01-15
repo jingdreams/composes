@@ -1,0 +1,21 @@
+version: '3'
+services:
+  pomelo-risk:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: pomelo-risk:${tag}
+    container_name: pomelo-risk
+    ports:
+      - 9010:9010
+    environment:
+      TZ: Asia/Shanghai
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - /mydata/logs/pomelo-risk:/var/logs
+    networks:
+      - pay_net
+
+networks:
+  pay_net:
+    external: true

@@ -1,0 +1,55 @@
+#!/bin/bash
+### Usage:
+###   ./start.sh $1
+###   $1: pomelo-admin or pomelo-merchant or pomelo-payment
+
+help() {
+  awk '/^### /{print "\033[33m"$0"\033[0m"}' "$0"
+}
+app="$1"
+#app=$(echo $module | awk -F '/' '{print $1}')
+pre=$(echo $app | awk -F '-' '{print $2}')
+
+be="$2"
+revision="$3"
+
+case $pre in
+    admin)
+        port1=8081
+        port2=8089
+        ;;
+    merchant)
+        port1=8082
+        port2=8180
+        ;;
+    payment)
+        port1=8080
+        port2=8080
+        ;;
+    *)
+        help
+        exit 2
+esac
+function deploy() {
+    docker stop $app
+    docker rm $app
+    docker rmi ${app}:1.0-SNAPSHOT
+    docker build -f /mydata/payment/${app}/Dockerfile -t ${app}:1.0-SNAPSHOT /mydata/payment/${app}
+    docker run --cap-add=SYS_PTRACE -p $port1:$port2 --name $app -v /etc/localtime:/etc/localtime -v /mydata/logs/${app}:/var/logs --net pay_net -d ${app}:1.0-SNAPSHOT
+}
+
+cd /mydata/payment/$app
+
+if [[ $be == 1 ]]; then
+/usr/bin/cp ${app}-1.0-SNAPSHOT.jar-$revision ${app}-1.0-SNAPSHOT.jar && deploy
+else
+deploy
+fi
+
+if [[ $? == 0 ]]; then
+    echo -e "\033[32m"$app" 构建成功\033[0m"
+    exit 0
+else:
+    echo -e "\033[31m构建失败,项目停止运行,请及时处理!!!\033[0m"
+    exit 1
+fi

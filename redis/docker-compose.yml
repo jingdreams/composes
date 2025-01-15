@@ -1,0 +1,25 @@
+services:
+  redis-overcommit:
+    image: redis:depends
+    restart: 'no'
+    privileged: true
+    volumes:
+      - /proc/sys/vm:/mnt/vm
+
+  redis:
+    image: redis:alpha
+    container_name: redis
+    depends_on:
+      - redis-overcommit
+    sysctls:
+      net.core.somaxconn: '2048'
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - redisdata:/data
+    ports:
+      - 6379:6379
+
+volumes:
+  redisdata:
+    external: true

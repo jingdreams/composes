@@ -1,0 +1,37 @@
+#!/usr/bin/python3
+import sys
+import os
+
+if len(sys.argv) == 1 or len(sys.argv) > 2:
+    sys.exit('请输入：admin/release/test')
+
+if sys.argv[1] == 'admin':
+    project = (sys.argv[1], '9571', '9571')
+elif sys.argv[1] == 'release':
+    project = ('release', '9588', '9588')
+elif sys.argv[1] == 'test':
+    project = ('release', '9577', '9577')
+else:
+    sys.exit('请输入：admin/release/test')
+
+
+# tuple4 = ({app: 'pomelo-admin', 'port1': 9081, 'port2': 8089}, {app: 'pomelo-merchant', 'port1': 9082,
+# 'port2': 8180}, {app: 'pomelo-payment', 'port1': 9080, 'port2': 8080})
+def docker_etc(app, port1, port2):
+    os.system('docker stop mgbank-%s' % sys.argv[1])
+    os.system('docker rm mgbank-%s' % sys.argv[1])
+    os.system('docker rmi mgbank-%s:latest' % sys.argv[1])
+    os.system(
+        'docker build -f /mydata/mgbank/%s/Dockerfile-%s -t mgbank-%s:latest /mydata/mgbank/%s' % (app, sys.argv[1], sys.argv[1], app))
+    os.system(
+        'docker run --cap-add=SYS_PTRACE -p %s:%s --name mgbank-%s -v /etc/localtime:/etc/localtime --net redis1 -d mgbank-%s:latest' % (port1, port2, sys.argv[1], sys.argv[1]))
+
+
+if __name__ == '__main__':
+    app = project[0]
+#    env = sys.argv[3]
+
+    port1 = project[1]
+    port2 = project[2]
+    docker_etc(app, port1, port2)
+

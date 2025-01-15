@@ -1,0 +1,11 @@
+services:
+  openresty:
+    image: openresty/openresty:jammy
+    container_name: openresty
+    volumes:
+      - openresty:/usr/local/openresty
+    network_mode: "host"
+
+volumes:
+  openresty:
+    external: true
