@@ -18,8 +18,8 @@ services:
           - docker
       
   jenkins:
-    build: .
-    image: myjenkins-blueocean:lts
+    # build: .
+    image: jingroot/myjenkins-blueocean:lts
     container_name: jenkins
     depends_on:
       - jenkins-docker
